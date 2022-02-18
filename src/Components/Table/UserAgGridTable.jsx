@@ -15,8 +15,8 @@ import FormModal from "../../Common/FormModal";
 import { useDeleteUserDetailMutation } from "../../RTK/UserSlice";
 
 // styles
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import "@ag-grid-community/core/dist/styles/ag-grid.css";
+import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 import swal from "sweetalert";
 
 const pageSize = 10;
