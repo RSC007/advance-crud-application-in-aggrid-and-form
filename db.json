@@ -1,0 +1,26 @@
+{
+  "user": [
+    {
+      "email": "rushikesh@bigscal.com",
+      "name": "Rushikesh",
+      "address": "Umiyanagar",
+      "city": "Amravati",
+      "state": "Gujarat",
+      "zip": "394210",
+      "check": [
+        "on"
+      ],
+      "id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
