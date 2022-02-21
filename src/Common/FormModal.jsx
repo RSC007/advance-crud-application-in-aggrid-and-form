@@ -4,22 +4,24 @@ import { ModalBody, ModalHeader, Modal } from "reactstrap";
 const FormModal = ({
   setIsModalOpen,
   isModalOpen,
-  button = <></>,
+  button = null,
   component,
+  size = "xl",
+  title = "",
 }) => {
   return (
     <>
       {button}
       <Modal
         isOpen={isModalOpen}
-        size="xl"
+        size={size}
         toggle={() => setIsModalOpen(!isModalOpen)}
       >
         <ModalHeader
           isOpen={isModalOpen}
           toggle={() => setIsModalOpen(!isModalOpen)}
         >
-          User Detail
+          {title}
         </ModalHeader>
         <ModalBody>{component}</ModalBody>
       </Modal>

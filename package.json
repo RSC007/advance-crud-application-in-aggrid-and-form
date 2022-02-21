@@ -6,6 +6,7 @@
     "@ag-grid-community/client-side-row-model": "^27.0.0",
     "@ag-grid-community/react": "^27.0.1",
     "@ag-grid-enterprise/column-tool-panel": "^27.0.0",
+    "@ag-grid-enterprise/master-detail": "^27.0.0",
     "@ag-grid-enterprise/menu": "^27.0.0",
     "@ag-grid-enterprise/server-side-row-model": "^27.0.0",
     "@ag-grid-enterprise/set-filter": "^27.0.0",
