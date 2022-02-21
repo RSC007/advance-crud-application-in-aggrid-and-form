@@ -1,3 +1,7 @@
+# Start Json Server at port 5555 to access the data
+
+### `json-server --watch db.json --port 5555`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

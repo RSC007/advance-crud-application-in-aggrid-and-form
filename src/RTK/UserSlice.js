@@ -4,11 +4,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const UserApi = createApi({
   reducerPath: "pokemonApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5555/" }),
-  tagTypes: "User",
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUserDetails: builder.query({
       query: () => `user`,
-      providesTags: "User",
+      providesTags: ["User"],
     }),
     postUserDetail: builder.mutation({
       query: (detail) => ({
@@ -16,7 +16,7 @@ export const UserApi = createApi({
         method: "POST",
         body: detail,
       }),
-      invalidatesTags: "User",
+      invalidatesTags: ["User"],
     }),
     putUserDetail: builder.mutation({
       query: (detail) => ({
@@ -24,14 +24,14 @@ export const UserApi = createApi({
         method: "PUT",
         body: detail,
       }),
-      invalidatesTags: "User",
+      invalidatesTags: ["User"],
     }),
     deleteUserDetail: builder.mutation({
       query: (id) => ({
         url: `user/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: "User",
+      invalidatesTags: ["User"],
     }),
   }),
 });

@@ -1,9 +1,10 @@
 // from libraries
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AgGridReact } from "@ag-grid-community/react";
-import { ServerSideRowModelModule } from "@ag-grid-enterprise/server-side-row-model";
+import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import { MenuModule } from "@ag-grid-enterprise/menu";
-import { ColumnsToolPanelModule } from "@ag-grid-enterprise/column-tool-panel";
+import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
+import { RowGroupingModule } from "@ag-grid-enterprise/row-grouping";
 
 // components
 import UserForm from "../Form/UserForm";
@@ -12,23 +13,34 @@ import UserForm from "../Form/UserForm";
 import FormModal from "../../Common/FormModal";
 
 // rtk features
-import { useDeleteUserDetailMutation } from "../../RTK/UserSlice";
+import {
+  useDeleteUserDetailMutation,
+  useGetUserDetailsQuery,
+} from "../../RTK/UserSlice";
 
 // styles
 import "@ag-grid-community/core/dist/styles/ag-grid.css";
 import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 import swal from "sweetalert";
 
-const pageSize = 10;
 const UserAgGridTable = () => {
+  const [rowData, setRowData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userDetail, setUserDetail] = useState({});
 
   const [deleteUser] = useDeleteUserDetailMutation();
+  const { data: userDetials } = useGetUserDetailsQuery();
+
+  useEffect(() => {
+    console.log("userDetials", userDetials);
+    setRowData(userDetials);
+  }, [userDetials]);
 
   const modules = [
-    ServerSideRowModelModule,
     MenuModule,
-    ColumnsToolPanelModule,
+    ClientSideRowModelModule,
+    SetFilterModule,
+    RowGroupingModule,
   ];
 
   const columnDefs = [
@@ -67,74 +79,46 @@ const UserAgGridTable = () => {
               Delete
             </button>
             {"   "}
-            <FormModal
-              component={<UserForm userDetail={data} />}
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-              button={
-                <button
-                  onClick={() => setIsModalOpen(!isModalOpen)}
-                  className="btn btn-warning"
-                >
-                  Edit
-                </button>
-              }
-            />
+            <button
+              onClick={() => {
+                setIsModalOpen(!isModalOpen);
+                setUserDetail(data);
+              }}
+              className="btn btn-warning"
+            >
+              Edit
+            </button>
           </div>
         );
       },
     },
   ];
 
-  //   Ag Server Side
-  const datasource = {
-    getRows(params) {
-      console.log(JSON.stringify(params.request, null, 1));
-      const { startRow, endRow, filterModel, sortModel } = params.request;
-      let url = `http://localhost:5555/user?`;
-      //Sorting
-      if (sortModel.length) {
-        const { colId, sort } = sortModel[0];
-        url += `_sort=${colId}&_order=${sort}&`;
-      }
-      //Filtering
-      const filterKeys = Object.keys(filterModel);
-      filterKeys.forEach((filter) => {
-        url += `${filter}=${filterModel[filter].filter}&`;
-      });
-      //Pagination
-      url += `_start=${startRow}&_end=${endRow}`;
-      fetch(url)
-        .then((httpResponse) => httpResponse.json())
-        .then((response) => {
-          params.success({ rowData: response, rowCount: response.length });
-        })
-        .catch((error) => {
-          console.error(error);
-          params.fail();
-        });
-    },
-  };
-  const onGridReady = (params) => {
-    params.api.setServerSideDatasource(datasource);
-  };
-
   return (
     <div className="container">
-      {/* {userDetails && ( */}
+      <FormModal
+        component={
+          <UserForm userDetail={userDetail} setIsModalOpen={setIsModalOpen} />
+        }
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        button={
+          <button
+            onClick={() => {
+              setIsModalOpen(!isModalOpen);
+            }}
+            className="btn btn-success mb-3"
+          >
+            Add User
+          </button>
+        }
+      />
       <div className="ag-theme-alpine" style={{ height: 600, width: 1200 }}>
         <AgGridReact
-          // defaultColDef={defaultColDef}
+          // ref={gridRef}
           modules={modules}
-          // rowData={userDetails}
+          rowData={rowData}
           columnDefs={columnDefs}
-          rowModelType="serverSide"
-          onGridReady={onGridReady}
-          cacheBlockSize={pageSize}
-          pagination
-          paginationPageSize={pageSize}
-          domLayout="autoHeight"
-          serverSideStoreType="partial"
           defaultColDef={{
             filter: true,
             floatingFilter: true,
