@@ -48,14 +48,14 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
   } = useFormik({
     initialValues,
     onSubmit: (values) => {
-      if (userDetail) {
+      if (userDetail?.id) {
         let data = { ...values, id: userDetail?.id };
-        console.log("datadata===", data);
         updateUser(data);
+        setIsModalOpen((isModalOpen) => !isModalOpen);
       } else {
         postApi(values);
+        setIsModalOpen((isModalOpen) => !isModalOpen);
       }
-      setIsModalOpen((isModalOpen) => !isModalOpen);
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().email().required("Email is required"),
@@ -71,7 +71,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
   });
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-row">
+      <div className="row">
         <div className="form-group col-md-6">
           <label htmlFor="inputEmail4">Email</label>
           <input
@@ -121,7 +121,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
           <div className="text-danger">{errAddress}</div>
         )}
       </div>
-      <div className="form-row">
+      <div className="row">
         <div className="form-group col-md-6">
           <label htmlFor="inputCity">City</label>
           <input
@@ -170,7 +170,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
           {errZip && touchedZip && <div className="text-danger">{errZip}</div>}
         </div>
       </div>
-      <div className="form-group">
+      <div className="form-group my-3">
         <div className="form-check">
           <input
             onChange={handleChange}
@@ -186,7 +186,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
           {errCheck && touchedCheck && <div>{errCheck}</div>}
         </div>
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button className="btn btn-primary">
         {userDetail?.id ? "Update Record" : "Add User"}
       </button>
     </form>

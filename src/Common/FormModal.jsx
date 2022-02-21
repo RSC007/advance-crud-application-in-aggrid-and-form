@@ -1,7 +1,12 @@
 // from libraries
 import { ModalBody, ModalHeader, Modal } from "reactstrap";
 
-const FormModal = ({ setIsModalOpen, isModalOpen, button, component }) => {
+const FormModal = ({
+  setIsModalOpen,
+  isModalOpen,
+  button = <></>,
+  component,
+}) => {
   return (
     <>
       {button}

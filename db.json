@@ -11,6 +11,48 @@
         "on"
       ],
       "id": 1
+    },
+    {
+      "email": "sumit.hingaspure99@gmail.com",
+      "name": "Sumit N Hingaspure",
+      "address": "Umiyanagar",
+      "city": "Surat",
+      "state": "Punjab",
+      "zip": "415263",
+      "check": [
+        "on"
+      ],
+      "id": 2
+    },
+    {
+      "email": "Ayushi@gamil.com",
+      "name": "Asyushi",
+      "address": "scdsdas",
+      "city": "Surat",
+      "state": "Maharashtra",
+      "zip": "425356",
+      "check": [
+        "on"
+      ],
+      "id": 3
+    },
+    {
+      "email": "sumit.hingaspure99@gmail.com",
+      "name": "Sumit N Hingaspure",
+      "address": "Umiyanagar",
+      "city": "Amravati",
+      "state": "Punjab",
+      "zip": "145258",
+      "id": 4
+    },
+    {
+      "email": "aniket@gamail.com",
+      "name": "Aniket S Sonar",
+      "address": "Shirdi",
+      "city": "Surat",
+      "state": "Gujarat",
+      "zip": "147852",
+      "id": 5
     }
   ],
   "comments": [
