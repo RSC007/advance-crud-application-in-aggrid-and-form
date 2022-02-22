@@ -28,6 +28,7 @@ import {
 import "@ag-grid-community/core/dist/styles/ag-grid.css";
 import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 
+const message = "This detail has been deleted!";
 const UserAgGridTable = () => {
   // Hooks
   const [rowData, setRowData] = useState(null);
@@ -72,7 +73,7 @@ const UserAgGridTable = () => {
         return (
           <div className="actions">
             <button
-              onClick={() => deletePopup(deleteUser, data.id)}
+              onClick={() => deletePopup(deleteUser, data.id, message)}
               className="btn btn-danger"
             >
               Delete

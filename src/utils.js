@@ -1,7 +1,7 @@
 // from libraries
 import swal from "sweetalert";
 
-export const deletePopup = (deleteRecord, id = null) => {
+export const deletePopup = (deleteRecord, id = null, message) => {
   console.log("id", id);
   swal({
     title: "Are you sure?",
@@ -11,7 +11,7 @@ export const deletePopup = (deleteRecord, id = null) => {
     dangerMode: true,
   }).then((willDelete) => {
     if (willDelete) {
-      swal("Poof! This detail has been deleted!", {
+      swal(message, {
         icon: "success",
       });
       typeof id === "number" ? deleteRecord(id) : deleteRecord(id);

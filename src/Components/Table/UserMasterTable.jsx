@@ -8,14 +8,19 @@ import UserMasterForm from "../Form/UserMasterForm";
 // common component
 import FormModal from "../../Common/FormModal";
 
+// from utils and rtk
+import { deletePopup } from "../../utils";
+import { usePutUserDetailMutation } from "../../RTK/UserApi";
+
 // style
 import "../../Assets/styles/UserMasterTable.css";
-import { usePutUserDetailMutation } from "../../RTK/UserApi";
-import { deletePopup } from "../../utils";
 
+const message = "This Company Detail has been deleted!";
 const UserMasterTable = ({ userDetail }) => {
   // hooks
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [changeCompanyDetail, setChangeCompanyDetail] = useState({});
+  const [formrequestType, setFormrequestType] = useState("Add");
 
   // rtk
   const [updateUser] = usePutUserDetailMutation();
@@ -25,7 +30,7 @@ const UserMasterTable = ({ userDetail }) => {
       (company) => company.companyName !== data.companyName
     );
     let updateDetail = { ...userDetail, companyDetail: companyRemoved };
-    deletePopup(updateUser, updateDetail);
+    deletePopup(updateUser, updateDetail, message);
   };
 
   // ag-grid fuctionalities
@@ -48,7 +53,16 @@ const UserMasterTable = ({ userDetail }) => {
               Delete
             </button>
             {"    "}
-            <button className="btn btn-warning">Edit</button>
+            <button
+              className="btn btn-warning"
+              onClick={() => {
+                setChangeCompanyDetail(data);
+                setIsModalOpen(!isModalOpen);
+                setFormrequestType("Edit");
+              }}
+            >
+              Edit
+            </button>
           </div>
         );
       },
@@ -65,12 +79,22 @@ const UserMasterTable = ({ userDetail }) => {
           button={
             <button
               className="btn btn-info"
-              onClick={() => setIsModalOpen(!isModalOpen)}
+              onClick={() => {
+                setChangeCompanyDetail({});
+                setFormrequestType("Add");
+                setIsModalOpen(!isModalOpen);
+              }}
             >
               Add
             </button>
           }
-          component={<UserMasterForm userDetail={userDetail} />}
+          component={
+            <UserMasterForm
+              changeCompanyDetail={changeCompanyDetail}
+              userDetail={userDetail}
+              formType={formrequestType}
+            />
+          }
         />
       </div>
       <div className="master-table">

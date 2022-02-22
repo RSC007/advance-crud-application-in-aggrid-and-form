@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { usePutUserDetailMutation } from "../../RTK/UserApi";
 
-const UserMasterForm = ({ userDetail }) => {
+const UserMasterForm = ({ userDetail, changeCompanyDetail, formType }) => {
   // rtk hooks
   const [updateUser] = usePutUserDetailMutation();
 
@@ -13,19 +13,42 @@ const UserMasterForm = ({ userDetail }) => {
     values: { companyName, numberOfEmployee },
   } = useFormik({
     initialValues: {
-      companyName: "",
-      numberOfEmployee: 0,
+      companyName: changeCompanyDetail?.companyName
+        ? changeCompanyDetail.companyName
+        : "",
+      numberOfEmployee: changeCompanyDetail?.numberOfEmployee
+        ? changeCompanyDetail.numberOfEmployee
+        : 0,
     },
     onSubmit: (values) => {
-      console.log("values---->", values, userDetail);
-      let companyAdded = userDetail?.companyDetail
-        ? [...userDetail?.companyDetail, values]
-        : [values];
-      let allData = {
-        ...userDetail,
-        companyDetail: companyAdded,
-      };
-      updateUser(allData);
+      let allData;
+      let companyAdded;
+      switch (formType) {
+        case "Add":
+          companyAdded = userDetail?.companyDetail
+            ? [...userDetail?.companyDetail, values]
+            : [values];
+          allData = {
+            ...userDetail,
+            companyDetail: companyAdded,
+          };
+          updateUser(allData);
+          break;
+
+        case "Edit":
+          companyAdded = userDetail?.companyDetail.map((company) =>
+            company.companyName === values.companyName ? values : company
+          );
+          allData = {
+            ...userDetail,
+            companyDetail: companyAdded,
+          };
+          updateUser(allData);
+          break;
+
+        default:
+          break;
+      }
     },
     validationSchema: Yup.object().shape({
       companyName: Yup.string(),
