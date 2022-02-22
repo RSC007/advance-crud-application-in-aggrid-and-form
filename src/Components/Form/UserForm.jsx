@@ -7,11 +7,11 @@ import * as Yup from "yup";
 import {
   usePostUserDetailMutation,
   usePutUserDetailMutation,
-} from "../../RTK/UserSlice";
+} from "../../RTK/UserApi";
 
 const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
+  // rtk hooks
   const [postApi] = usePostUserDetailMutation();
-
   const [updateUser] = usePutUserDetailMutation();
 
   const initialValues = {
@@ -21,6 +21,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
     city: userDetail.city ? userDetail.city : "",
     state: userDetail.state ? userDetail.state : "",
     zip: userDetail.zip ? userDetail.zip : "",
+    check: userDetail?.check ? userDetail.check : false,
   };
   const {
     handleSubmit,
@@ -44,16 +45,17 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
       zip: touchedZip,
       check: touchedCheck,
     },
-    values: { email, name, address, city, state, zip },
+    values: { email, name, address, city, state, zip, check },
   } = useFormik({
     initialValues,
     onSubmit: (values) => {
-      if (userDetail?.id) {
-        let data = { ...values, id: userDetail?.id };
-        updateUser(data);
-        setIsModalOpen((isModalOpen) => !isModalOpen);
-      } else {
-        postApi(values);
+      if (values?.check) {
+        if (userDetail?.id) {
+          let data = { ...values, id: userDetail?.id };
+          updateUser(data);
+        } else {
+          postApi(values);
+        }
         setIsModalOpen((isModalOpen) => !isModalOpen);
       }
     },
@@ -66,6 +68,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
       zip: Yup.number("This must be number").required(
         "Please provide zip code"
       ),
+      check: Yup.bool().oneOf([true], "You have accept these"),
     }),
     enableReinitialize: true,
   });
@@ -169,24 +172,23 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
           />
           {errZip && touchedZip && <div className="text-danger">{errZip}</div>}
         </div>
-      </div>
-      <div className="form-group my-3">
-        <div className="form-check">
+        <div className="form-group">
+          <label htmlFor="termsCheck">Terms & Condition</label>
           <input
             onChange={handleChange}
             onBlur={handleBlur}
             name="check"
-            className="form-check-input"
             type="checkbox"
-            id="gridCheck"
+            className="d-block"
+            id="termsCheck"
+            checked={check}
           />
-          <label className="form-check-label" htmlFor="gridCheck">
-            Check me out
-          </label>
-          {errCheck && touchedCheck && <div>{errCheck}</div>}
+          {errCheck && touchedCheck && (
+            <div className="text-danger">{errCheck}</div>
+          )}
         </div>
       </div>
-      <button className="btn btn-primary">
+      <button className="btn btn-primary mt-3" type="submit">
         {userDetail?.id ? "Update Record" : "Add User"}
       </button>
     </form>

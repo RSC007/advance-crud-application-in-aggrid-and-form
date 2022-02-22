@@ -1,5 +1,7 @@
 // from librabries
 import React from "react";
+
+// components
 import UserAgGridTable from "../Table/UserAgGridTable";
 
 const Home = () => {

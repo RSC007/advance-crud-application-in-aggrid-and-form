@@ -10,7 +10,21 @@
       "check": [
         "on"
       ],
-      "id": 1
+      "id": 1,
+      "companyDetail": [
+        {
+          "companyName": "Roboto Ltd",
+          "numberOfEmployee": 5632
+        },
+        {
+          "companyName": "Pharma Ltd",
+          "numberOfEmployee": 4578
+        },
+        {
+          "companyName": "xdaxax",
+          "numberOfEmployee": 555
+        }
+      ]
     },
     {
       "email": "sumit.hingaspure99@gmail.com",
@@ -25,24 +39,13 @@
       "id": 2
     },
     {
-      "email": "Ayushi@gamil.com",
-      "name": "Asyushi",
-      "address": "scdsdas",
-      "city": "Surat",
-      "state": "Maharashtra",
-      "zip": "425356",
-      "check": [
-        "on"
-      ],
-      "id": 3
-    },
-    {
       "email": "sumit.hingaspure99@gmail.com",
       "name": "Sumit N Hingaspure",
       "address": "Umiyanagar",
       "city": "Amravati",
       "state": "Punjab",
       "zip": "145258",
+      "check": true,
       "id": 4
     },
     {
@@ -52,7 +55,28 @@
       "city": "Surat",
       "state": "Gujarat",
       "zip": "147852",
+      "check": true,
       "id": 5
+    },
+    {
+      "email": "Sanny@gamil.com",
+      "name": "Sanny",
+      "address": "Lal Tower",
+      "city": "Ahmdabad",
+      "state": "Gujarat",
+      "zip": "111111",
+      "check": true,
+      "id": 7
+    },
+    {
+      "email": "pawan@gmail.com",
+      "name": "Pawan",
+      "address": "gandhidham",
+      "city": "ghandhinagar",
+      "state": "Gujarat",
+      "zip": "444444",
+      "check": true,
+      "id": 8
     }
   ],
   "comments": [

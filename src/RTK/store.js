@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 // sclice
-import { UserApi } from "./UserSlice";
+import { UserApi } from "./UserApi";
 
 export const store = configureStore({
   reducer: {

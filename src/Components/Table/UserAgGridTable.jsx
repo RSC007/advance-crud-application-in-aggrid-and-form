@@ -1,13 +1,17 @@
 // from libraries
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AgGridReact } from "@ag-grid-community/react";
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import { MenuModule } from "@ag-grid-enterprise/menu";
 import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
 import { RowGroupingModule } from "@ag-grid-enterprise/row-grouping";
+import { MasterDetailModule } from "@ag-grid-enterprise/master-detail";
+import { ColumnsToolPanelModule } from "@ag-grid-enterprise/column-tool-panel";
+import swal from "sweetalert";
 
 // components
 import UserForm from "../Form/UserForm";
+import UserMasterTable from "./UserMasterTable";
 
 // common components
 import FormModal from "../../Common/FormModal";
@@ -16,36 +20,46 @@ import FormModal from "../../Common/FormModal";
 import {
   useDeleteUserDetailMutation,
   useGetUserDetailsQuery,
-} from "../../RTK/UserSlice";
+} from "../../RTK/UserApi";
 
 // styles
 import "@ag-grid-community/core/dist/styles/ag-grid.css";
 import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
-import swal from "sweetalert";
 
 const UserAgGridTable = () => {
+  // Hooks
   const [rowData, setRowData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userDetail, setUserDetail] = useState({});
+  const [gridApi, setGridApi] = useState(null);
 
+  const gridRef = useRef();
+
+  // rtk hooks
   const [deleteUser] = useDeleteUserDetailMutation();
   const { data: userDetials } = useGetUserDetailsQuery();
 
   useEffect(() => {
-    console.log("userDetials", userDetials);
     setRowData(userDetials);
   }, [userDetials]);
 
+  // Ag-Grid Features and functionalities
   const modules = [
     MenuModule,
     ClientSideRowModelModule,
     SetFilterModule,
     RowGroupingModule,
+    MasterDetailModule,
+    ColumnsToolPanelModule,
   ];
 
   const columnDefs = [
     { field: "email", filter: "agTextColumnFilter" },
-    { field: "name", filter: "agTextColumnFilter" },
+    {
+      field: "name",
+      filter: "agTextColumnFilter",
+      cellRenderer: "agGroupCellRenderer",
+    },
     { field: "address", filter: "agTextColumnFilter" },
     { field: "city", filter: "agTextColumnFilter" },
     { field: "state", filter: "agTextColumnFilter" },
@@ -94,9 +108,55 @@ const UserAgGridTable = () => {
     },
   ];
 
+  const onGridReady = (parmas) => {
+    setGridApi(parmas);
+  };
+
+  const quickSearchUserDetail = (input) => {
+    gridApi.api.setQuickFilter(input);
+  };
+
+  // masterDetail Chile Table
+  const detailCellRenderer = ({ data }) => {
+    return <UserMasterTable userDetail={data} />;
+  };
+  // Client side features
+  const printNode = (node, index) => {
+    console.log("node", node.data);
+  };
+
+  const onBtForEachLeafNode = () => {
+    gridRef.current.api.forEachLeafNode(printNode);
+  };
+
+  const onBtnForEachAfterSort = () => {
+    gridRef.current.api.forEachNodeAfterFilterAndSort(printNode);
+  };
+
   return (
     <div className="container">
+      <div className="client-side-feature row mb-3">
+        <div className="global-search col-4">
+          <input
+            className="form-control"
+            type="search"
+            placeholder="Search anything related user detail here...."
+            onChange={(e) => quickSearchUserDetail(e.target.value)}
+          />
+        </div>
+        <div className="each-node-data col-3">
+          <button className="btn" onClick={onBtForEachLeafNode}>
+            forEachLeafNode
+          </button>
+        </div>
+        <div className="each-node-after-sort col-3">
+          <button className="btn btn" onClick={onBtnForEachAfterSort}>
+            forEachNodeAfterSort
+          </button>
+        </div>
+      </div>
       <FormModal
+        title={"Add User-Detail"}
         component={
           <UserForm userDetail={userDetail} setIsModalOpen={setIsModalOpen} />
         }
@@ -115,10 +175,13 @@ const UserAgGridTable = () => {
       />
       <div className="ag-theme-alpine" style={{ height: 600, width: 1200 }}>
         <AgGridReact
-          // ref={gridRef}
+          ref={gridRef}
+          onGridReady={onGridReady}
           modules={modules}
           rowData={rowData}
           columnDefs={columnDefs}
+          detailCellRenderer={detailCellRenderer}
+          masterDetail={true}
           defaultColDef={{
             filter: true,
             floatingFilter: true,
