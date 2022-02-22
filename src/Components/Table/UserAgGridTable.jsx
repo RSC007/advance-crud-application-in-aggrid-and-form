@@ -13,10 +13,10 @@ import UserForm from "../Form/UserForm";
 import UserMasterTable from "./UserMasterTable";
 
 // common components
-import FormModal from "../../Common/FormModal";
+import FormModal from "Common/FormModal";
 
 // utils
-import { deletePopup } from "../../utils";
+import { deletePopup } from "utils";
 
 // rtk features
 import {
@@ -159,7 +159,7 @@ const UserAgGridTable = () => {
           </button>
         }
       />
-      <div className="ag-theme-alpine" style={{ height: 600, width: 1200 }}>
+      <div className="ag-theme-alpine">
         <AgGridReact
           ref={gridRef}
           onGridReady={onGridReady}

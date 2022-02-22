@@ -9,11 +9,11 @@ import UserMasterForm from "../Form/UserMasterForm";
 import FormModal from "../../Common/FormModal";
 
 // from utils and rtk
-import { deletePopup } from "../../utils";
-import { usePutUserDetailMutation } from "../../RTK/UserApi";
+import { deletePopup } from "utils";
+import { usePutUserDetailMutation } from "RTK/UserApi";
 
 // style
-import "../../Assets/styles/UserMasterTable.css";
+import "Assets/styles/UserMasterTable.css";
 
 const message = "This Company Detail has been deleted!";
 const UserMasterTable = ({ userDetail }) => {
@@ -40,6 +40,13 @@ const UserMasterTable = ({ userDetail }) => {
     },
     {
       field: "numberOfEmployee",
+      cellStyle: ({ data }) => {
+        if (data.numberOfEmployee > 5000) {
+          return { "border-left-color": "green" };
+        } else {
+          return { "border-left-color": "red" };
+        }
+      },
     },
     {
       field: "Action",
@@ -96,6 +103,9 @@ const UserMasterTable = ({ userDetail }) => {
             />
           }
         />
+        <div className="information">
+          <h3>{userDetail?.name}</h3>
+        </div>
       </div>
       <div className="master-table">
         <div className="ag-theme-alpine" style={{ height: 600, width: 500 }}>

@@ -2,7 +2,6 @@
 import swal from "sweetalert";
 
 export const deletePopup = (deleteRecord, id = null, message) => {
-  console.log("id", id);
   swal({
     title: "Are you sure?",
     text: "Once deleted, you will not be able to recover this Detail!",

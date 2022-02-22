@@ -7,22 +7,13 @@ import * as Yup from "yup";
 import {
   usePostUserDetailMutation,
   usePutUserDetailMutation,
-} from "../../RTK/UserApi";
+} from "RTK/UserApi";
 
 const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
   // rtk hooks
   const [postApi] = usePostUserDetailMutation();
   const [updateUser] = usePutUserDetailMutation();
 
-  const initialValues = {
-    email: userDetail.email ? userDetail.email : "",
-    name: userDetail.name ? userDetail.name : "",
-    address: userDetail.address ? userDetail.address : "",
-    city: userDetail.city ? userDetail.city : "",
-    state: userDetail.state ? userDetail.state : "",
-    zip: userDetail.zip ? userDetail.zip : "",
-    check: userDetail?.check ? userDetail.check : false,
-  };
   const {
     handleSubmit,
     handleChange,
@@ -47,7 +38,15 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
     },
     values: { email, name, address, city, state, zip, check },
   } = useFormik({
-    initialValues,
+    initialValues: {
+      email: userDetail.email ? userDetail.email : "",
+      name: userDetail.name ? userDetail.name : "",
+      address: userDetail.address ? userDetail.address : "",
+      city: userDetail.city ? userDetail.city : "",
+      state: userDetail.state ? userDetail.state : "",
+      zip: userDetail.zip ? userDetail.zip : "",
+      check: userDetail?.check ? userDetail.check : false,
+    },
     onSubmit: (values) => {
       if (values?.check) {
         if (userDetail?.id) {

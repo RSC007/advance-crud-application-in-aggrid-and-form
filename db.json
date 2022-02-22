@@ -58,7 +58,13 @@
       "state": "Gujarat",
       "zip": "111111",
       "check": true,
-      "id": 7
+      "id": 7,
+      "companyDetail": [
+        {
+          "companyName": "Pharma",
+          "numberOfEmployee": 6666
+        }
+      ]
     },
     {
       "email": "pawan@gmail.com",
@@ -69,6 +75,32 @@
       "zip": "444444",
       "check": true,
       "id": 8
+    },
+    {
+      "email": "bhoyaraniket63@gmail.com",
+      "name": "Aniket",
+      "address": "aaaaaa",
+      "city": "suart",
+      "state": "Gujarat",
+      "zip": "145258",
+      "check": true,
+      "id": 9
+    },
+    {
+      "email": "rama@gmail.com",
+      "name": "Rama",
+      "address": "new fantasy colony",
+      "city": "kanpur",
+      "state": "Maharashtra",
+      "zip": "445455",
+      "check": true,
+      "id": 10,
+      "companyDetail": [
+        {
+          "companyName": "Robot Pvt",
+          "numberOfEmployee": 6666
+        }
+      ]
     }
   ],
   "comments": [

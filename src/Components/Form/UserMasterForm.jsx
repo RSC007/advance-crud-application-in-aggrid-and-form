@@ -1,7 +1,10 @@
+// from libraris
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { usePutUserDetailMutation } from "../../RTK/UserApi";
+
+// from rtk
+import { usePutUserDetailMutation } from "RTK/UserApi";
 
 const UserMasterForm = ({ userDetail, changeCompanyDetail, formType }) => {
   // rtk hooks
