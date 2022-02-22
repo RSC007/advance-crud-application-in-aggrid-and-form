@@ -19,10 +19,6 @@
         {
           "companyName": "Pharma Ltd",
           "numberOfEmployee": 4578
-        },
-        {
-          "companyName": "xdaxax",
-          "numberOfEmployee": 555
         }
       ]
     },
@@ -36,17 +32,13 @@
       "check": [
         "on"
       ],
-      "id": 2
-    },
-    {
-      "email": "sumit.hingaspure99@gmail.com",
-      "name": "Sumit N Hingaspure",
-      "address": "Umiyanagar",
-      "city": "Amravati",
-      "state": "Punjab",
-      "zip": "145258",
-      "check": true,
-      "id": 4
+      "id": 2,
+      "companyDetail": [
+        {
+          "companyName": "Robot LTd",
+          "numberOfEmployee": 999
+        }
+      ]
     },
     {
       "email": "aniket@gamail.com",

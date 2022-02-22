@@ -18,9 +18,12 @@ const UserMasterForm = ({ userDetail }) => {
     },
     onSubmit: (values) => {
       console.log("values---->", values, userDetail);
+      let companyAdded = userDetail?.companyDetail
+        ? [...userDetail?.companyDetail, values]
+        : [values];
       let allData = {
         ...userDetail,
-        companyDetail: [...userDetail?.companyDetail, values],
+        companyDetail: companyAdded,
       };
       updateUser(allData);
     },

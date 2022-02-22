@@ -1,0 +1,6 @@
+.user-master-table-container {
+  max-width: 700px;
+  margin: 30px;
+  display: flex;
+  justify-content: space-around;
+}

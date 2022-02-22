@@ -8,10 +8,27 @@ import UserMasterForm from "../Form/UserMasterForm";
 // common component
 import FormModal from "../../Common/FormModal";
 
+// style
+import "../../Assets/styles/UserMasterTable.css";
+import { usePutUserDetailMutation } from "../../RTK/UserApi";
+import { deletePopup } from "../../utils";
+
 const UserMasterTable = ({ userDetail }) => {
   // hooks
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // rtk
+  const [updateUser] = usePutUserDetailMutation();
+
+  const addCompanyDetail = (data) => {
+    let companyRemoved = userDetail?.companyDetail.filter(
+      (company) => company.companyName !== data.companyName
+    );
+    let updateDetail = { ...userDetail, companyDetail: companyRemoved };
+    deletePopup(updateUser, updateDetail);
+  };
+
+  // ag-grid fuctionalities
   const columnDefs = [
     {
       field: "companyName",
@@ -19,9 +36,26 @@ const UserMasterTable = ({ userDetail }) => {
     {
       field: "numberOfEmployee",
     },
+    {
+      field: "Action",
+      cellRenderer: ({ data }) => {
+        return (
+          <div className="master-table-actions">
+            <button
+              className="btn btn-danger"
+              onClick={() => addCompanyDetail(data)}
+            >
+              Delete
+            </button>
+            {"    "}
+            <button className="btn btn-warning">Edit</button>
+          </div>
+        );
+      },
+    },
   ];
   return (
-    <div className="container m-3 d-flex justify-content-around">
+    <div className="user-master-table-container">
       <div className="mastr-table-avtions">
         <FormModal
           title={"User Company-Detail"}
@@ -30,7 +64,7 @@ const UserMasterTable = ({ userDetail }) => {
           setIsModalOpen={setIsModalOpen}
           button={
             <button
-              className="btn btn-secondary"
+              className="btn btn-info"
               onClick={() => setIsModalOpen(!isModalOpen)}
             >
               Add
@@ -44,10 +78,8 @@ const UserMasterTable = ({ userDetail }) => {
           <AgGridReact
             rowData={userDetail?.companyDetail}
             columnDefs={columnDefs}
-            domLayout
+            domLayout="autoHeight"
             defaultColDef={{
-              filter: true,
-              floatingFilter: true,
               sortable: true,
               flex: 1,
             }}
