@@ -25,7 +25,7 @@ const UserMasterTable = ({ userDetail }) => {
   // rtk
   const [updateUser] = usePutUserDetailMutation();
 
-  const addCompanyDetail = (data) => {
+  const removeCompanyDetail = (data) => {
     let companyRemoved = userDetail?.companyDetail.filter(
       (company) => company.companyName !== data.companyName
     );
@@ -55,7 +55,7 @@ const UserMasterTable = ({ userDetail }) => {
           <div className="master-table-actions">
             <button
               className="btn btn-danger"
-              onClick={() => addCompanyDetail(data)}
+              onClick={() => removeCompanyDetail(data)}
             >
               Delete
             </button>

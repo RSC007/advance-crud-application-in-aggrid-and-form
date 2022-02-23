@@ -10,6 +10,7 @@ const UserMasterForm = ({ userDetail, changeCompanyDetail, formType }) => {
   // rtk hooks
   const [updateUser] = usePutUserDetailMutation();
 
+  // useFormik for form
   const {
     handleSubmit,
     handleChange,

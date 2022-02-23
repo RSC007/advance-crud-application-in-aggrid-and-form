@@ -98,10 +98,10 @@ const UserAgGridTable = () => {
     setGridApi(parmas);
   };
 
+  // global filter
   const quickSearchUserDetail = (input) => {
     gridApi.api.setQuickFilter(input);
   };
-
   // masterDetail Chile Table
   const detailCellRenderer = ({ data }) => {
     return <UserMasterTable userDetail={data} />;
@@ -152,6 +152,7 @@ const UserAgGridTable = () => {
           <button
             onClick={() => {
               setIsModalOpen(!isModalOpen);
+              setUserDetail({});
             }}
             className="btn btn-success mb-3"
           >

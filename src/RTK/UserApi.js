@@ -7,7 +7,7 @@ export const UserApi = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     getUserDetails: builder.query({
-      query: () => `user`,
+      query: (query) => (query ? `${query}` : `user`),
       providesTags: ["User"],
     }),
     postUserDetail: builder.mutation({
@@ -39,6 +39,7 @@ export const UserApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+  useLazyGetUserDetailsQuery,
   useGetUserDetailsQuery,
   usePostUserDetailMutation,
   usePutUserDetailMutation,
