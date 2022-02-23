@@ -7,14 +7,16 @@ import { SetFilterModule } from "@ag-grid-enterprise/set-filter";
 import { RowGroupingModule } from "@ag-grid-enterprise/row-grouping";
 import { MasterDetailModule } from "@ag-grid-enterprise/master-detail";
 import { ColumnsToolPanelModule } from "@ag-grid-enterprise/column-tool-panel";
-import swal from "sweetalert";
 
 // components
 import UserForm from "../Form/UserForm";
 import UserMasterTable from "./UserMasterTable";
 
 // common components
-import FormModal from "../../Common/FormModal";
+import FormModal from "Common/FormModal";
+
+// utils
+import { deletePopup } from "utils";
 
 // rtk features
 import {
@@ -26,6 +28,7 @@ import {
 import "@ag-grid-community/core/dist/styles/ag-grid.css";
 import "@ag-grid-community/core/dist/styles/ag-theme-alpine.css";
 
+const message = "This detail has been deleted!";
 const UserAgGridTable = () => {
   // Hooks
   const [rowData, setRowData] = useState(null);
@@ -70,24 +73,7 @@ const UserAgGridTable = () => {
         return (
           <div className="actions">
             <button
-              onClick={() => {
-                swal({
-                  title: "Are you sure?",
-                  text: "Once deleted, you will not be able to recover this Detail!",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                }).then((willDelete) => {
-                  if (willDelete) {
-                    swal("Poof! This detail has been deleted!", {
-                      icon: "success",
-                    });
-                    deleteUser(data.id);
-                  } else {
-                    swal("This detail is safe!");
-                  }
-                });
-              }}
+              onClick={() => deletePopup(deleteUser, data.id, message)}
               className="btn btn-danger"
             >
               Delete
@@ -112,10 +98,10 @@ const UserAgGridTable = () => {
     setGridApi(parmas);
   };
 
+  // global filter
   const quickSearchUserDetail = (input) => {
     gridApi.api.setQuickFilter(input);
   };
-
   // masterDetail Chile Table
   const detailCellRenderer = ({ data }) => {
     return <UserMasterTable userDetail={data} />;
@@ -166,6 +152,7 @@ const UserAgGridTable = () => {
           <button
             onClick={() => {
               setIsModalOpen(!isModalOpen);
+              setUserDetail({});
             }}
             className="btn btn-success mb-3"
           >
@@ -173,15 +160,18 @@ const UserAgGridTable = () => {
           </button>
         }
       />
-      <div className="ag-theme-alpine" style={{ height: 600, width: 1200 }}>
+      <div className="ag-theme-alpine">
         <AgGridReact
           ref={gridRef}
           onGridReady={onGridReady}
           modules={modules}
           rowData={rowData}
           columnDefs={columnDefs}
+          pagination
+          paginationPageSize={5}
           detailCellRenderer={detailCellRenderer}
-          masterDetail={true}
+          masterDetail
+          domLayout="autoHeight"
           defaultColDef={{
             filter: true,
             floatingFilter: true,

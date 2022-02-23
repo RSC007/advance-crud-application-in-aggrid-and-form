@@ -2,31 +2,39 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import AsyncSelect from "react-select/async";
+import Select from "react-select";
 
 // from rtk
 import {
+  useGetUserDetailsQuery,
+  useLazyGetUserDetailsQuery,
   usePostUserDetailMutation,
   usePutUserDetailMutation,
-} from "../../RTK/UserApi";
+} from "RTK/UserApi";
 
 const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
   // rtk hooks
   const [postApi] = usePostUserDetailMutation();
   const [updateUser] = usePutUserDetailMutation();
+  const [getAllState] = useLazyGetUserDetailsQuery();
+  const { data: getRequestAllCities } = useGetUserDetailsQuery(`cities`);
 
-  const initialValues = {
-    email: userDetail.email ? userDetail.email : "",
-    name: userDetail.name ? userDetail.name : "",
-    address: userDetail.address ? userDetail.address : "",
-    city: userDetail.city ? userDetail.city : "",
-    state: userDetail.state ? userDetail.state : "",
-    zip: userDetail.zip ? userDetail.zip : "",
-    check: userDetail?.check ? userDetail.check : false,
+  // react-select features
+  const loadOptionsForState = async (inputValue) => {
+    return inputValue
+      ? getAllState(`states?name=${inputValue}`).then(
+          (response) => response.data
+        )
+      : getAllState("states").then((response) => response.data);
   };
+
+  // useFormik regarding form
   const {
     handleSubmit,
     handleChange,
     handleBlur,
+    setFieldValue,
     errors: {
       email: errEmail,
       name: errName,
@@ -47,7 +55,15 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
     },
     values: { email, name, address, city, state, zip, check },
   } = useFormik({
-    initialValues,
+    initialValues: {
+      email: userDetail.email ? userDetail.email : "",
+      name: userDetail.name ? userDetail.name : "",
+      address: userDetail.address ? userDetail.address : "",
+      city: userDetail.city ? userDetail.city : "",
+      state: userDetail.state ? userDetail.state : "",
+      zip: userDetail.zip ? userDetail.zip : "",
+      check: userDetail?.check ? userDetail.check : false,
+    },
     onSubmit: (values) => {
       if (values?.check) {
         if (userDetail?.id) {
@@ -72,6 +88,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
     }),
     enableReinitialize: true,
   });
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
@@ -125,55 +142,64 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
         )}
       </div>
       <div className="row">
-        <div className="form-group col-md-6">
-          <label htmlFor="inputCity">City</label>
-          <input
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="city"
-            type="text"
-            className="form-control"
-            id="inputCity"
-            value={city}
-          />
-          {errCity && touchedCity && (
-            <div className="text-danger">{errCity}</div>
-          )}
-        </div>
         <div className="form-group col-md-4">
           <label htmlFor="inputState">State</label>
-          <select
+          <AsyncSelect
             name="state"
             id="inputState"
-            className="form-control"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={state}
-          >
-            <option selected>Choose...</option>
-            <option>Gujarat</option>
-            <option>Maharashtra</option>
-            <option>Punjab</option>
-          </select>
+            cacheOptions
+            loadOptions={loadOptionsForState}
+            getOptionLabel={(option) => `${option.name}`}
+            getOptionValue={(option) => `${option.name}`}
+            defaultInputValue={state}
+            defaultOptions
+            onChange={(data) => setFieldValue("state", data.name)}
+          />
           {errState && touchedState && (
             <div className="text-danger">{errState}</div>
           )}
         </div>
-        <div className="form-group col-md-2">
-          <label htmlFor="inputZip">Zip</label>
-          <input
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="zip"
-            type="text"
-            className="form-control"
-            id="inputZip"
-            value={zip}
-          />
-          {errZip && touchedZip && <div className="text-danger">{errZip}</div>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="termsCheck">Terms & Condition</label>
+        {state && (
+          <div className="form-group col-md-6">
+            <label htmlFor="inputCity">City</label>
+            <Select
+              name="city"
+              id="inputCity"
+              options={
+                getRequestAllCities
+                  ? getRequestAllCities[state].map((state) => ({
+                      label: state,
+                      value: state,
+                    }))
+                  : []
+              }
+              defaultInputValue={city}
+              defaultOptions
+              onChange={(data) => setFieldValue("city", data.value)}
+            />
+            {errCity && touchedCity && (
+              <div className="text-danger">{errCity}</div>
+            )}
+          </div>
+        )}
+        {city && (
+          <div className="form-group col-md-2">
+            <label htmlFor="inputZip">Zip</label>
+            <input
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="zip"
+              type="text"
+              className="form-control"
+              id="inputZip"
+              value={zip}
+            />
+            {errZip && touchedZip && (
+              <div className="text-danger">{errZip}</div>
+            )}
+          </div>
+        )}
+        <div className="form-group mt-3">
           <input
             onChange={handleChange}
             onBlur={handleBlur}
@@ -183,6 +209,7 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
             id="termsCheck"
             checked={check}
           />
+          <label htmlFor="termsCheck">Terms & Conditions</label>
           {errCheck && touchedCheck && (
             <div className="text-danger">{errCheck}</div>
           )}

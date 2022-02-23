@@ -4,7 +4,7 @@ import React from "react";
 // components pages
 import Home from "./Components/Pages/Home";
 
-// styles import
+// style
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {

@@ -2,12 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // Define a service using a base URL and expected endpoints
 export const UserApi = createApi({
-  reducerPath: "pokemonApi",
+  reducerPath: "userDetailApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5555/" }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
     getUserDetails: builder.query({
-      query: () => `user`,
+      query: (query) => (query ? `${query}` : `user`),
       providesTags: ["User"],
     }),
     postUserDetail: builder.mutation({
@@ -39,6 +39,7 @@ export const UserApi = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+  useLazyGetUserDetailsQuery,
   useGetUserDetailsQuery,
   usePostUserDetailMutation,
   usePutUserDetailMutation,
