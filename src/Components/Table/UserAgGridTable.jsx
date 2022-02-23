@@ -40,7 +40,7 @@ const UserAgGridTable = () => {
 
   // rtk hooks
   const [deleteUser] = useDeleteUserDetailMutation();
-  const { data: userDetials } = useGetUserDetailsQuery();
+  const { data: userDetials } = useGetUserDetailsQuery({ endPoint: "user" });
 
   useEffect(() => {
     setRowData(userDetials);

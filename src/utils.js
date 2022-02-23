@@ -13,7 +13,9 @@ export const deletePopup = (deleteRecord, id = null, message) => {
       swal(message, {
         icon: "success",
       });
-      typeof id === "number" ? deleteRecord(id) : deleteRecord(id);
+      typeof id === "number"
+        ? deleteRecord({ endPoint: "user", id: id })
+        : deleteRecord({ endPoint: "user", body: id, id: id.id });
     } else {
       swal("This detail is safe!");
     }

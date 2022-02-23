@@ -18,15 +18,17 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
   const [postApi] = usePostUserDetailMutation();
   const [updateUser] = usePutUserDetailMutation();
   const [getAllState] = useLazyGetUserDetailsQuery();
-  const { data: getRequestAllCities } = useGetUserDetailsQuery(`cities`);
+  const { data: getRequestAllCities } = useGetUserDetailsQuery({
+    endPoint: `cities`,
+  });
 
   // react-select features
   const loadOptionsForState = async (inputValue) => {
     return inputValue
-      ? getAllState(`states?name=${inputValue}`).then(
+      ? getAllState({ endPoint: `states?name=${inputValue}` }).then(
           (response) => response.data
         )
-      : getAllState("states").then((response) => response.data);
+      : getAllState({ endPoint: "states" }).then((response) => response.data);
   };
 
   // useFormik regarding form
@@ -68,9 +70,9 @@ const UserForm = ({ setIsModalOpen, userDetail = {} }) => {
       if (values?.check) {
         if (userDetail?.id) {
           let data = { ...values, id: userDetail?.id };
-          updateUser(data);
+          updateUser({ endPoint: "user", body: data, id: data.id });
         } else {
-          postApi(values);
+          postApi({ endPoint: "user", body: values });
         }
         setIsModalOpen((isModalOpen) => !isModalOpen);
       }
