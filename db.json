@@ -153,18 +153,18 @@
       "id": 15
     },
     {
-      "email": "Rushikesh@bigscal.com",
-      "name": "ss",
-      "address": "Umiyanagar",
-      "city": "Guntakal",
-      "state": "Arunachal Pradesh",
-      "zip": "145258",
+      "email": "Shyam@gamil.com",
+      "name": "Shyam Lala",
+      "address": "ShyamNagar",
+      "city": "Arwal",
+      "state": "Bihar",
+      "zip": "394210",
       "check": true,
-      "id": 16,
+      "id": 17,
       "companyDetail": [
         {
-          "companyName": "dsdsd",
-          "numberOfEmployee": 6656
+          "companyName": "Deo-Shine Pvt",
+          "numberOfEmployee": 4785
         }
       ]
     }

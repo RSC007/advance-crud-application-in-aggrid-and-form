@@ -36,7 +36,7 @@ const UserMasterForm = ({ userDetail, changeCompanyDetail, formType }) => {
             ...userDetail,
             companyDetail: companyAdded,
           };
-          updateUser(allData);
+          updateUser({ endPoint: "user", body: allData, id: allData.id });
           break;
 
         case "Edit":
@@ -47,7 +47,7 @@ const UserMasterForm = ({ userDetail, changeCompanyDetail, formType }) => {
             ...userDetail,
             companyDetail: companyAdded,
           };
-          updateUser(allData);
+          updateUser({ endPoint: "user", body: allData, id: allData.id });
           break;
 
         default:

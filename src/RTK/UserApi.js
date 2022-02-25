@@ -7,28 +7,28 @@ export const UserApi = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     getUserDetails: builder.query({
-      query: (query) => (query ? `${query}` : `user`),
+      query: ({ endPoint }) => (endPoint ? endPoint : `user`),
       providesTags: ["User"],
     }),
     postUserDetail: builder.mutation({
-      query: (detail) => ({
-        url: "user",
+      query: ({ endPoint, body }) => ({
+        url: endPoint,
         method: "POST",
-        body: detail,
+        body: body,
       }),
       invalidatesTags: ["User"],
     }),
     putUserDetail: builder.mutation({
-      query: (detail) => ({
-        url: `user/${detail.id}`,
+      query: ({ endPoint, body, id }) => ({
+        url: `${endPoint}/${id}`,
         method: "PUT",
-        body: detail,
+        body,
       }),
       invalidatesTags: ["User"],
     }),
     deleteUserDetail: builder.mutation({
-      query: (id) => ({
-        url: `user/${id}`,
+      query: ({ endPoint, id }) => ({
+        url: `${endPoint}/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["User"],
